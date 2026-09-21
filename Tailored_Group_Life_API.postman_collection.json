@@ -1,0 +1,1011 @@
+{
+  "info": {
+    "_postman_id": "tailored-group-life-api-v1",
+    "name": "KAF Tailored Group Life API",
+    "description": "Tailored Group Life API endpoints for leads, quotations, members, purchase requests, and endorsements. Generated from the API documentation.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "1.1 Login",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/auth/login/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login",
+                ""
+              ]
+            },
+            "description": "Broker login with email and password. Returns JWT access and refresh tokens plus broker user details.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"broker@example.com\",\n  \"password\": \"password\"\n}",
+              "options": {"raw": {"language": "json"}}
+            }
+          },
+          "response": [
+            {
+              "name": "Example response",
+              "originalRequest": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/auth/login/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login",
+                    ""
+                  ]
+                },
+                "description": "Broker login with email and password. Returns JWT access and refresh tokens plus broker user details."
+              },
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"access_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n  \"refresh_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n  \"user\": {\n    \"id\": 1,\n    \"email\": \"broker@example.com\",\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"is_broker\": true,\n    \"broker_fra_id\": \"FRA-123\"\n  }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Lead Management",
+      "item": [
+        {
+          "name": "2.1 List Leads",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/leads/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "leads",
+                ""
+              ]
+            },
+            "description": "Returns all leads belonging to the authenticated broker. Use the returned id as parent when creating a child lead or as main_lead_id when creating a quotation."
+          },
+          "response": [
+            {
+              "name": "Example response",
+              "originalRequest": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/leads/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "leads",
+                    ""
+                  ]
+                },
+                "description": "Returns all leads belonging to the authenticated broker. Use the returned id as parent when creating a child lead or as main_lead_id when creating a quotation."
+              },
+              "status": "OK",
+              "code": 200,
+              "body": "[\n  {\n    \"id\": 10,\n    \"lead_type\": \"corporate\",\n    \"company_english_name\": \"Acme Egypt\",\n    \"company_arabic_name\": \"اكمي مصر\",\n    \"tax_id\": \"123456789\",\n    \"company_name_on_ecard\": \"Acme Egypt Ltd.\",\n    \"parent\": null,\n    \"created_at\": \"2026-09-02T10:00:00Z\",\n    \"updated_at\": \"2026-09-02T10:00:00Z\"\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "2.2 Create Lead",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/leads/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "leads",
+                ""
+              ]
+            },
+            "description": "Create a new corporate lead. The authenticated broker is set as the lead owner and creator.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"company_english_name\": \"Acme Egypt\",\n  \"company_arabic_name\": \"اكمي مصر\",\n  \"company_name_on_ecard\": \"Acme Egypt Ltd.\",\n  \"tax_id\": \"123456789\",\n  \"contact_person_name\": \"John Doe\",\n  \"contact_person_mobile\": \"01001234567\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Example response",
+              "originalRequest": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/leads/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "leads",
+                    ""
+                  ]
+                },
+                "description": "Create a new corporate lead. The authenticated broker is set as the lead owner and creator.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"company_english_name\": \"Acme Egypt\",\n  \"company_arabic_name\": \"اكمي مصر\",\n  \"company_name_on_ecard\": \"Acme Egypt Ltd.\",\n  \"tax_id\": \"123456789\",\n  \"contact_person_name\": \"John Doe\",\n  \"contact_person_mobile\": \"01001234567\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"id\": 10,\n  \"lead_type\": \"corporate\",\n  \"company_english_name\": \"Acme Egypt\",\n  \"company_arabic_name\": \"اكمي مصر\",\n  \"company_name_on_ecard\": \"Acme Egypt Ltd.\",\n  \"tax_id\": \"123456789\",\n  \"parent\": null,\n  \"created_at\": \"2026-09-02T10:00:00Z\",\n  \"updated_at\": \"2026-09-02T10:00:00Z\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Quotations",
+      "item": [
+        {
+          "name": "3.1 Create Quotation",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/quotations/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "quotations",
+                ""
+              ]
+            },
+            "description": "Create a new Group Life quotation. Two scenarios are auto-created: a current scenario (index 0) and a requested scenario (index 1).",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"company_english_name\": \"Acme Egypt\",\n  \"company_arabic_name\": \"اكمي مصر\",\n  \"currency\": \"EGP\",\n  \"payment_frequency\": \"annual\",\n  \"main_lead_id\": 10,\n  \"is_virgin\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Example response",
+              "originalRequest": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/quotations/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "quotations",
+                    ""
+                  ]
+                },
+                "description": "Create a new Group Life quotation. Two scenarios are auto-created: a current scenario (index 0) and a requested scenario (index 1).",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"company_english_name\": \"Acme Egypt\",\n  \"company_arabic_name\": \"اكمي مصر\",\n  \"currency\": \"EGP\",\n  \"payment_frequency\": \"annual\",\n  \"main_lead_id\": 10,\n  \"is_virgin\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"id\": 42,\n  \"company_english_name\": \"Acme Egypt\",\n  \"company_arabic_name\": \"اكمي مصر\",\n  \"currency\": \"EGP\",\n  \"payment_frequency\": \"annual\",\n  \"product_type\": \"group_life\",\n  \"tailored_status\": \"draft\",\n  \"main_lead_id\": 10,\n  \"created_at\": \"2026-09-02T10:00:00Z\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "3.2 Create Category / Plan",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/quotations/{quotation_id}/categories/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "quotations",
+                "{quotation_id}",
+                "categories",
+                ""
+              ]
+            },
+            "description": "Create a life category/plan for a Tailored Group Life quotation. The category can be either a fixed-ceiling plan or a multiple-of-salary plan.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Plan A\",\n  \"category_type\": \"life\",\n  \"quotation_id\": 42,\n  \"rate\": \"1.500\",\n  \"ceiling\": \"100000.00\",\n  \"is_multiple_of_salary\": false,\n  \"benefit_ids\": [\n    1,\n    2\n  ],\n  \"minimum_members\": 1,\n  \"maximum_age\": 65\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Example response",
+              "originalRequest": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/quotations/{quotation_id}/categories/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "quotations",
+                    "{quotation_id}",
+                    "categories",
+                    ""
+                  ]
+                },
+                "description": "Create a life category/plan for a Tailored Group Life quotation. The category can be either a fixed-ceiling plan or a multiple-of-salary plan.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Plan A\",\n  \"category_type\": \"life\",\n  \"quotation_id\": 42,\n  \"rate\": \"1.500\",\n  \"ceiling\": \"100000.00\",\n  \"is_multiple_of_salary\": false,\n  \"benefit_ids\": [\n    1,\n    2\n  ],\n  \"minimum_members\": 1,\n  \"maximum_age\": 65\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"id\": 5,\n  \"name\": \"Plan A\",\n  \"category_type\": \"life\",\n  \"quotation_id\": 42,\n  \"is_multiple_of_salary\": false,\n  \"benefits\": [1, 2]\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Reference Data",
+      "item": [
+        {
+          "name": "4.1 List Benefits",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/benefits/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "benefits",
+                ""
+              ]
+            },
+            "description": "Returns all active benefits that can be selected while creating a category via benefit_ids."
+          },
+          "response": [
+            {
+              "name": "Example response",
+              "originalRequest": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/benefits/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "benefits",
+                    ""
+                  ]
+                },
+                "description": "Returns all active benefits that can be selected while creating a category via benefit_ids."
+              },
+              "status": "OK",
+              "code": 200,
+              "body": "[\n  {\n    \"id\": 1,\n    \"name\": \"Accidental Death\",\n    \"description\": \"Coverage for accidental death\",\n    \"is_active\": true\n  },\n  {\n    \"id\": 2,\n    \"name\": \"Permanent Disability\",\n    \"description\": \"Coverage for permanent disability\",\n    \"is_active\": true\n  }\n]"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Members",
+      "item": [
+        {
+          "name": "5.1 Download Member Template",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/quotations/{quotation_id}/members/template/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "quotations",
+                "{quotation_id}",
+                "members",
+                "template",
+                ""
+              ]
+            },
+            "description": "Download an Excel template for the quotation. This is the same file generated by the admin Download Template button on /admin/smedashboard/premiumcalculation/{quotation_id}/change/."
+          },
+          "response": []
+        },
+        {
+          "name": "5.2 Upload Member Excel",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/quotations/{quotation_id}/members/upload/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "quotations",
+                "{quotation_id}",
+                "members",
+                "upload",
+                ""
+              ]
+            },
+            "description": "Upload a completed Excel member template. The existing members for the selected scenario are replaced and the quotation premiums are recalculated. This endpoint reuses the existing Tailored member-import validation logic."
+          },
+          "response": [
+            {
+              "name": "Example response",
+              "originalRequest": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/quotations/{quotation_id}/members/upload/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "quotations",
+                    "{quotation_id}",
+                    "members",
+                    "upload",
+                    ""
+                  ]
+                },
+                "description": "Upload a completed Excel member template. The existing members for the selected scenario are replaced and the quotation premiums are recalculated. This endpoint reuses the existing Tailored member-import validation logic."
+              },
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"deleted\": 0,\n  \"created\": 25,\n  \"total_members\": 25,\n  \"total_net_premium\": \"12500.00\",\n  \"total_tax\": \"0.00\",\n  \"total_with_tax\": \"12500.00\",\n  \"errors\": [],\n  \"excluded_count\": 0\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Purchase Requests",
+      "item": [
+        {
+          "name": "6.1 Create Purchase Request",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/purchase-requests/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "purchase-requests",
+                ""
+              ]
+            },
+            "description": "Convert a Tailored Group Life quotation into a purchase request. The development stamp is forced to 0 and the status is set to pending_client_approval (Pending Client Approval). The KAF policy number and invoices are generated later when an administrator changes the status to pending_issuance.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quotation_id\": 1089,\n  \"inception_date\": \"2026-09-01\",\n  \"notes\": \"Client confirmed via email\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Example response",
+              "originalRequest": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/purchase-requests/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "purchase-requests",
+                    ""
+                  ]
+                },
+                "description": "Convert a Tailored Group Life quotation into a purchase request. The development stamp is forced to 0 and the status is set to pending_client_approval (Pending Client Approval). The KAF policy number and invoices are generated later when an administrator changes the status to pending_issuance.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"quotation_id\": 1089,\n  \"inception_date\": \"2026-09-01\",\n  \"notes\": \"Client confirmed via email\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"id\": 42,\n  \"kaf_policy_number\": null,\n  \"status\": \"pending_client_approval\",\n  \"quotation_id\": 1089,\n  \"lead_id\": 10,\n  \"inception_date\": \"2026-09-01\",\n  \"development_stamp\": \"0.00\",\n  \"created_at\": \"2026-09-02T10:00:00Z\",\n  \"message\": \"Purchase request created successfully\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "6.2 Get Purchase Request Status",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/purchase-requests/{pr_number}/status/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "purchase-requests",
+                "{pr_number}",
+                "status",
+                ""
+              ]
+            },
+            "description": "Return the current status of a purchase request. {pr_number} can be either the KAF policy number (e.g., GTL20260000001) or the numeric PR ID."
+          },
+          "response": [
+            {
+              "name": "Example response",
+              "originalRequest": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/purchase-requests/{pr_number}/status/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "purchase-requests",
+                    "{pr_number}",
+                    "status",
+                    ""
+                  ]
+                },
+                "description": "Return the current status of a purchase request. {pr_number} can be either the KAF policy number (e.g., GTL20260000001) or the numeric PR ID."
+              },
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"id\": 42,\n  \"kaf_policy_number\": \"GTL20260000001\",\n  \"status\": \"pending_client_approval\",\n  \"status_display\": \"Pending Client Approval\",\n  \"quotation_id\": 1089,\n  \"lead_id\": 10,\n  \"inception_date\": \"2026-09-01\",\n  \"created_at\": \"2026-09-02T10:00:00Z\",\n  \"updated_at\": \"2026-09-02T12:00:00Z\"\n}"
+            },
+            {
+              "name": "Example response",
+              "originalRequest": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/purchase-requests/{pr_number}/status/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "purchase-requests",
+                    "{pr_number}",
+                    "status",
+                    ""
+                  ]
+                },
+                "description": "Return the current status of a purchase request. {pr_number} can be either the KAF policy number (e.g., GTL20260000001) or the numeric PR ID."
+              },
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"rejection_reason\": \"other\",\n  \"rejection_reason_display\": \"Other\",\n  \"rejection_reason_detail\": \"The client did not approve the final terms.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "6.3 Display Draft Contract PDF",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/purchase-requests/{pr_number}/draft-contract/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "purchase-requests",
+                "{pr_number}",
+                "draft-contract",
+                ""
+              ]
+            },
+            "description": "Display the Draft Contract PDF generated for the Group Life purchase request. {pr_number} can be the KAF policy number or numeric PR ID."
+          },
+          "response": []
+        },
+        {
+          "name": "6.4 Display Invoice PDF",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/purchase-requests/{pr_number}/invoice/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "purchase-requests",
+                "{pr_number}",
+                "invoice",
+                ""
+              ]
+            },
+            "description": "Display the initial invoice PDF associated with the purchase request. {pr_number} accepts either the KAF policy number or numeric PR ID."
+          },
+          "response": []
+        },
+        {
+          "name": "6.5 Download Member Breakdown Excel",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/purchase-requests/{pr_number}/member-breakdown/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "purchase-requests",
+                "{pr_number}",
+                "member-breakdown",
+                ""
+              ]
+            },
+            "description": "Download the member premium breakdown Excel stored on the initial invoice associated with the purchase request. {pr_number} accepts either the KAF policy number or numeric PR ID."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Endorsements",
+      "item": [
+        {
+          "name": "7.1 Create Endorsement",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/endorsements/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "endorsements",
+                ""
+              ]
+            },
+            "description": "Create a draft endorsement using the issued Group Life Purchase Request ID."
+          },
+          "response": [
+            {
+              "name": "Example response",
+              "originalRequest": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/endorsements/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "endorsements",
+                    ""
+                  ]
+                },
+                "description": "Create a draft endorsement using the issued Group Life Purchase Request ID."
+              },
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"purchase_request_id\": 1064\n}"
+            }
+          ]
+        },
+        {
+          "name": "7.2 Download Endorsement Excel",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/endorsements/{er_id}/template/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "endorsements",
+                "{er_id}",
+                "template",
+                ""
+              ]
+            },
+            "description": "Download the same bulk import Excel template generated by the admin Endorsement section. It contains example rows for Addition, Delete, and Update, plus dropdown lists for categories and subgroups, instructions, and an ActiveMembers reference sheet."
+          },
+          "response": []
+        },
+        {
+          "name": "7.3 Preview Endorsement Excel",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/endorsements/{er_id}/preview/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "endorsements",
+                "{er_id}",
+                "preview",
+                ""
+              ]
+            },
+            "description": "Dry-run parse of the completed bulk import workbook. The file is validated, a preview result is stored on the endorsement request, and the response shows the planned additions, deletions, updates, and any row-level errors or validation messages. Nothing is applied yet."
+          },
+          "response": []
+        },
+        {
+          "name": "7.4 Apply Endorsement Excel",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/endorsements/{er_id}/apply/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "endorsements",
+                "{er_id}",
+                "apply",
+                ""
+              ]
+            },
+            "description": "Apply the last successful preview stored on the endorsement request. Creates endorsement items, updates the endorsement type, and executes the member changes immediately. Returns the number of items created, members affected, and the FRA sync result (if any)."
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://appstaging.kaf.com.eg/api/tailored-group-life",
+      "type": "string"
+    },
+    {
+      "key": "access_token",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
